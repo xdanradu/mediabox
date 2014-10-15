@@ -1,23 +1,23 @@
-winPlugin = {};
+mediabox = {};
 
-winPlugin.open = function(source, title, caption) {
+mediabox.open = function(source, title, caption) {
 
   var re = /(?:\.([^.]+))?$/;
 
   var ext = re.exec(source)[1];
 
   if (ext === 'mp4') {
-    winPlugin.appendVideo(source, title, caption);
+    mediabox.appendVideo(source, title, caption);
   }
 
   if (ext === 'jpg' || ext === 'png') {
-    winPlugin.appendImage(source, title, caption);
+    mediabox.appendImage(source, title, caption);
   }
 }
 
-winPlugin.getModalHtmlTemplate = function(sourceTemplate, title, caption){
+mediabox.getModalHtmlTemplate = function(sourceTemplate, title, caption){
   var template = "<div class='modalHeader'>";
-  template += "<a href='' onClick='winPlugin.close();return false;'>";
+  template += "<a href='' onClick='mediabox.close();return false;'>";
   template += "<img src='images/close.png'></a></div>";
   template += "<div class='modalContent'>";
   template += sourceTemplate;
@@ -26,7 +26,7 @@ winPlugin.getModalHtmlTemplate = function(sourceTemplate, title, caption){
   return template;
 }
 
-winPlugin.appendVideo = function(source, title, caption) {
+mediabox.appendVideo = function(source, title, caption) {
   //if image or video
   var overlay = document.createElement("div");
   overlay.id = "overlay";
@@ -37,7 +37,7 @@ winPlugin.appendVideo = function(source, title, caption) {
   modal.className = "modal hide";
   modal.id = "modal";
   var sourceHtmlTemplate = '<video id="videoPlay" controls="" autoplay="" name="media"><source src="' + source + '" type="video/mp4"></video>';
-  modal.innerHTML = winPlugin.getModalHtmlTemplate(sourceHtmlTemplate, title, caption);
+  modal.innerHTML = mediabox.getModalHtmlTemplate(sourceHtmlTemplate, title, caption);
   overlay.appendChild(modal);
 
   var loading = document.createElement("div");
@@ -48,11 +48,11 @@ winPlugin.appendVideo = function(source, title, caption) {
 
   document.getElementById("videoPlay")
   .addEventListener('loadedmetadata', function(e){
-    winPlugin.scaleTheWindow(this.videoWidth, this.videoHeight);
+    mediabox.scaleTheWindow(this.videoWidth, this.videoHeight);
   });
 }
 
-winPlugin.appendImage = function(source, title, caption) {
+mediabox.appendImage = function(source, title, caption) {
   //if image or video
   var overlay = document.createElement("div");
   overlay.id = "overlay";
@@ -65,7 +65,7 @@ winPlugin.appendImage = function(source, title, caption) {
   var img = new Image();
   img.src = source;
   img.id = "imagePlay";
-  modal.innerHTML = winPlugin.getModalHtmlTemplate(img.outerHTML, title, caption);
+  modal.innerHTML = mediabox.getModalHtmlTemplate(img.outerHTML, title, caption);
   overlay.appendChild(modal);
 
   var loading = document.createElement("div");
@@ -75,11 +75,11 @@ winPlugin.appendImage = function(source, title, caption) {
   document.body.appendChild(overlay);
 
   img.onload = function() {
-    winPlugin.scaleTheWindow(this.width, this.height);
+    mediabox.scaleTheWindow(this.width, this.height);
   }
 }
 
-winPlugin.scaleTheWindow = function(width, height){
+mediabox.scaleTheWindow = function(width, height){
   var modal = document.getElementById("modal");
   modal.style.width = width + "px";
   modal.style.height = 80+height + "px";
@@ -92,7 +92,7 @@ winPlugin.scaleTheWindow = function(width, height){
   modal.className = "modal";
 };
 
-winPlugin.close = function() {
+mediabox.close = function() {
   //var overlay = document.getElementById("overlay");
   //console.dir(overlay);
   $(".overlay").remove();
