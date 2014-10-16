@@ -75,12 +75,29 @@ mediabox.appendImage = function(source, title, caption) {
   document.body.appendChild(overlay);
 
   img.onload = function() {
-    mediabox.scaleTheWindow(this.width, this.height);
+
+    var sHeight=0;
+    var sWidth=0;
+    if (this.height>480){
+      sWidth = this.width * (480/this.height);
+      sHeight=480;
+    } else {
+      sWidth=this.width;
+      sHeight=this.height;
+    }
+    console.log(sHeight+" x "+sWidth);
+    var im = document.getElementById("imagePlay")
+    im.style.height=sHeight+"px";
+    im.style.width=sWidth+"px";
+    console.dir(img);
+
+    mediabox.scaleTheWindow(sWidth, sHeight);
   }
 }
 
 mediabox.scaleTheWindow = function(width, height){
   var modal = document.getElementById("modal");
+
   modal.style.width = width + "px";
   modal.style.height = 80+height + "px";
   modal.style.marginTop = -(height / 2) + "px";
